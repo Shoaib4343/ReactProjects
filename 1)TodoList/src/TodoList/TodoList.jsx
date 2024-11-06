@@ -1,18 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 
 const TodoList = () => {
   const [value, setValue] = useState("");
   const [task, setTask] = useState([]);
-  console.log(task);
+  const [dateAndTime, setDateAndTime] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const formatedDate = now.toLocaleDateString();
+      const formatedTime = now.toLocaleTimeString();
+      setDateAndTime(`${formatedDate}-${formatedTime}`);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // input todo value
   const handleInputValue = (e) => {
     setValue(e.target.value);
   };
 
-  //handle submit form
+  // handle submit form
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
@@ -23,9 +34,22 @@ const TodoList = () => {
       setValue("");
       return;
     }
+    // add new taks
     setTask((pre) => [...pre, value]); // when submit button is click add that new value in the end with existing values
 
     setValue("");
+  };
+
+  // Delete taks
+  const handleDelete = (index) => {
+    // setTask((pre) => pre.filter((_, i) => i !== index));
+    const updateTask = task.filter((_,i)=> i !== index)
+    setTask(updateTask)
+  };
+
+  // handle Clear All Button
+  const handleClearAllButton = () => {
+    setTask([]);
   };
 
   return (
@@ -34,6 +58,10 @@ const TodoList = () => {
       <h1 className="text-4xl font-semibold text-gray-800 text-center mb-8">
         Todo List
       </h1>
+
+      <h2 className="text-center text-xl text-gray-600 font-semibold mb-6">
+        {dateAndTime}
+      </h2>
 
       {/* Todo form */}
       <form onSubmit={handleFormSubmit} className="flex mb-6">
@@ -65,13 +93,25 @@ const TodoList = () => {
               <button className="bg-green-500 text-white p-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
                 <FaCheck />
               </button>
-              <button className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
+              <button
+                onClick={() => handleDelete(index)}
+                className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
                 <RxCross2 />
               </button>
             </div>
           </li>
         ))}
       </ul>
+
+      {task.length <= 1 ? null : (
+        <button
+          onClick={handleClearAllButton}
+          className="px-6 py-2 mt-6 bg-red-500 text-white text-lg font-semibold rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300"
+        >
+          Clear All
+        </button>
+      )}
     </div>
   );
 };
