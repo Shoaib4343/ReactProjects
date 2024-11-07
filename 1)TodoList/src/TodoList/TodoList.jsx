@@ -1,56 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { FaCheck } from "react-icons/fa6";
-import { RxCross2 } from "react-icons/rx";
+import TodoForm from "./TodoForm";
+import List from "./List";
+import TodoDate from "./TodoDate";
+import { getLocalData, setLocalData } from "./LocalStorage";
+
 
 const TodoList = () => {
-  const [value, setValue] = useState("");
-  const [task, setTask] = useState([]);
-  const [dateAndTime, setDateAndTime] = useState("");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      const formatedDate = now.toLocaleDateString();
-      const formatedTime = now.toLocaleTimeString();
-      setDateAndTime(`${formatedDate}-${formatedTime}`);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // input todo value
-  const handleInputValue = (e) => {
-    setValue(e.target.value);
-  };
+  const [task, setTask] = useState(()=>getLocalData());
 
   // handle submit form
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
+  const handleFormSubmit = (value) => {
+    const { id, content, checked } = value;
+    if (!value.content) return; //if input is empty don't save it
+    // if (task.includes(value)) return; //it the input task is already presend make the input clean and return
 
-    if (!value) return; //if input is empty don't save it
-
-    if (task.includes(value)) {
-      //it the input task is already presend make the input clean and return
-      setValue("");
-      return;
-    }
+    const ifContnet = task.find((current) => current.content === content);
+    if (ifContnet) return;
     // add new taks
-    setTask((pre) => [...pre, value]); // when submit button is click add that new value in the end with existing values
-
-    setValue("");
+    setTask((pre) => [...pre, { id, content, checked }]); // when submit button is click add that new value in the end with existing values
   };
 
+  setLocalData(task);
+
   // Delete taks
-  const handleDelete = (index) => {
+  const handleDelete = (val) => {
     // setTask((pre) => pre.filter((_, i) => i !== index));
-    const updateTask = task.filter((_,i)=> i !== index)
-    setTask(updateTask)
+    const updateTask = task.filter((curTask) => curTask.content !== val);
+    setTask(updateTask);
   };
 
   // handle Clear All Button
   const handleClearAllButton = () => {
     setTask([]);
   };
+
+  // handle check
+  const handleCheckButton = (data)=>{
+    const updateTask = task.map((curTask)=>{
+      if(curTask.content === data){
+        return {...curTask,checked:!curTask.checked}
+      }else{
+        return curTask
+      }
+
+    })
+    setTask(updateTask)
+  }
 
   return (
     <div className="bg-gray-100 p-8 rounded-lg max-w-xl mx-auto shadow-lg mt-4">
@@ -59,48 +54,16 @@ const TodoList = () => {
         Todo List
       </h1>
 
-      <h2 className="text-center text-xl text-gray-600 font-semibold mb-6">
-        {dateAndTime}
-      </h2>
+      <TodoDate />
 
-      {/* Todo form */}
-      <form onSubmit={handleFormSubmit} className="flex mb-6">
-        <input
-          type="text"
-          placeholder="Add a new task..."
-          className="flex-grow p-3 rounded-l-lg border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={value}
-          onChange={handleInputValue}
-        />
-        <button
-          type="submit"
-          className="px-6 bg-green-500 text-white text-lg font-semibold rounded-r-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300"
-        >
-          Add Task
-        </button>
-      </form>
+      {/* form input task */}
+      <TodoForm addOnSubmitHandler={handleFormSubmit} />
 
       {/* Task List */}
       <ul className="space-y-4">
         {/* Example task */}
-        {task.map((val, index) => (
-          <li
-            key={index}
-            className="flex items-center justify-between bg-white p-4 rounded-lg shadow-md"
-          >
-            <span className="text-lg text-gray-700">{val}</span>
-            <div className="flex justify-between items-center gap-6">
-              <button className="bg-green-500 text-white p-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
-                <FaCheck />
-              </button>
-              <button
-                onClick={() => handleDelete(index)}
-                className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-              >
-                <RxCross2 />
-              </button>
-            </div>
-          </li>
+        {task.map((val) => (
+          <List val={val.content} key={val.id} checked={val.checked} handleCheck={handleCheckButton} handleDelete={handleDelete} />
         ))}
       </ul>
 
