@@ -1,41 +1,57 @@
 <h1>React Todo List Application</h1>
-<a href="https://cleartodo.netlify.app/">Live Demo </a>
+<a href="https://cleartodo.netlify.app/" target="_blank">Live Demo</a>
 
-ClearTodo is a simple and intuitive Todo List application built with React. It helps users manage daily tasks efficiently, offering a minimalistic design, task management features like marking tasks as completed, deleting individual tasks, and clearing all tasks. It also stores tasks in the browser's localStorage, ensuring persistence across page reloads.
+<p>ClearTodo is a simple and intuitive Todo List application built with React. It helps users manage daily tasks efficiently, offering a minimalistic design, task management features like:</p>
+
+<ul>
+  <li>Adding new tasks.</li>
+  <li>Marking tasks as completed.</li>
+  <li>Deleting individual tasks.</li>
+  <li>Clearing all tasks.</li>
+</ul>
+
+<p>The app also offers:</p>
+<ul>
+  <li>Real-time display of current date and time.</li>
+  <li>Data persistence using localStorage.</li>
+  <li>Responsive design using Tailwind CSS.</li>
+</ul>
 
 <h2>Features</h2>
-Add new tasks.
-Mark tasks as completed.
-Delete individual tasks.
-Clear all tasks.
-Real-time display of current date and time.
-Data persistence using localStorage.
-Responsive design using Tailwind CSS.
-Tech Stack
-React: Handles the state and rendering of components.
-Tailwind CSS: Provides utility-based styling for a clean, responsive UI.
-React Icons: For intuitive and visually appealing icons.
-LocalStorage: Stores tasks locally in the browser for persistence.
-Installation
-To run this project locally, follow these steps:
+<ul>
+  <li>Add new tasks.</li>
+  <li>Mark tasks as completed.</li>
+  <li>Delete individual tasks.</li>
+  <li>Clear all tasks.</li>
+  <li>Real-time display of current date and time.</li>
+  <li>Data persistence using localStorage.</li>
+  <li>Responsive design using Tailwind CSS.</li>
+</ul>
 
-<h2>Clone the repository:</h2>
-bash
-Copy code
-git clone https://github.com/Shoaib4343/ReactProjects.git
-Navigate to the project directory:
-bash
-Copy code
-cd ReactProjects/1)TodoList
-Install dependencies using Bun:
-bash
-Copy code
-bun install
-Run the development server:
-bash
-Copy code
-bun run start
+<h2>Tech Stack</h2>
+<ul>
+  <li><strong>React</strong>: Handles the state and rendering of components.</li>
+  <li><strong>Tailwind CSS</strong>: Provides utility-based styling for a clean, responsive UI.</li>
+  <li><strong>React Icons</strong>: For intuitive and visually appealing icons.</li>
+  <li><strong>LocalStorage</strong>: Stores tasks locally in the browser for persistence.</li>
+</ul>
 
-Demo
-You can view a live demo of this application on <a href="https://cleartodo.netlify.app/">Netlify</a>.
+<h2>Installation</h2>
+<p>To run this project locally, follow these steps:</p>
 
+<h3>Clone the repository:</h3>
+<pre><code>git clone https://github.com/Shoaib4343/ReactProjects.git</code></pre>
+
+<h3>Navigate to the project directory:</h3>
+<pre><code>cd ReactProjects/1)TodoList</code></pre>
+
+<h3>Install dependencies using Bun:</h3>
+<pre><code>bun install</code></pre>
+
+<h3>Run the development server:</h3>
+<pre><code>bun run start</code></pre>
+
+<h2>Demo</h2>
+<p>You can view a live demo of this application on 
+  <a href="https://cleartodo.netlify.app/" target="_blank">Netlify</a>.
+</p>
