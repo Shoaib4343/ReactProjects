@@ -5,4 +5,5 @@ A collection of various projects built using React.js. This repository showcases
 Below are the projects included in this repository:
 
 <h2>Todo List App</h2>
-A simple todo list application where users can add, delete, and track tasks.
+A simple and responsive todo list application where users can add, mark as complete, delete, and clear tasks. It features real-time date and time display, and task data persistence using localStorage. <br>
+<a href="https://cleartodo.netlify.app/">live demo</a>
