@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "country": "Japan",
+    "capital": "Tokyo",
+    "population": 126.8,
+    "interesting_fact": "Japan is home to the world's oldest company, Kongō Gumi, which was founded in 578 AD."
+  },
+  {
+    "id": 2,
+    "country": "France",
+    "capital": "Paris",
+    "population": 67.06,
+    "interesting_fact": "The Eiffel Tower can be 15 cm taller during the summer due to the expansion of iron in the heat."
+  },
+  {
+    "id": 3,
+    "country": "Australia",
+    "capital": "Canberra",
+    "population": 25.69,
+    "interesting_fact": "Australia is the only country that is also a continent."
+  },
+  {
+    "id": 4,
+    "country": "Brazil",
+    "capital": "Brasília",
+    "population": 213.99,
+    "interesting_fact": "Brazil is home to the Amazon Rainforest, the largest tropical rainforest in the world."
+  },
+  {
+    "id": 5,
+    "country": "Canada",
+    "capital": "Ottawa",
+    "population": 38.01,
+    "interesting_fact": "Canada has the longest coastline of any country in the world, stretching over 202,000 kilometers."
+  },
+  {
+    "id": 6,
+    "country": "Egypt",
+    "capital": "Cairo",
+    "population": 104.12,
+    "interesting_fact": "The Great Pyramid of Giza is the only remaining wonder of the ancient Seven Wonders of the World."
+  },
+  {
+    "id": 7,
+    "country": "India",
+    "capital": "New Delhi",
+    "population": 1393,
+    "interesting_fact": "India is the birthplace of four major world religions: Hinduism, Buddhism, Jainism, and Sikhism."
+  },
+  {
+    "id": 8,
+    "country": "Italy",
+    "capital": "Rome",
+    "population": 60.36,
+    "interesting_fact": "Italy is home to the world's smallest country, Vatican City, which is an independent city-state surrounded by Rome."
+  },
+  {
+    "id": 9,
+    "country": "Russia",
+    "capital": "Moscow",
+    "population": 145.9,
+    "interesting_fact": "Russia is the largest country in the world, spanning over 17 million square kilometers."
+  },
+  {
+    "id": 10,
+    "country": "South Africa",
+    "capital": "Pretoria (administrative), Bloemfontein (judicial), Cape Town (legislative)",
+    "population": 59.39,
+    "interesting_fact": "South Africa is the only country in the world to have hosted the soccer, cricket, and rugby world cups."
+  }
+]
