@@ -11,3 +11,8 @@ A simple and responsive todo list application where users can add, mark as compl
 <h2>Pokémon Card App</h2>
 An engaging application where users can explore Pokémon cards fetched from the Pokémon API. Features include a search bar for finding Pokémon by name and detailed information like height, weight, and types. The app is responsive and styled for an optimal user experience. <br>
 <a href="https://clearpokemon.netlify.app/">live demo</a>
+
+<h2>World Agency</h2>
+A dynamic application that features a multi-page design with sections like Home, About, Contact, and Country. Users can explore a list of countries with search and filter functionality, view details such as population, region, and capital, and use a "Read More" button for additional information. The app fetches real-time data from an API and features a responsive design styled with Tailwind CSS. <br>
+<a href="https://worldagency.netlify.app/">live demo</a>
+
