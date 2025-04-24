@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ProductContext } from '../context/ProductContext';
 import { CartContext } from '../context/CartContext';
 
 const ProductDetailCart = () => {
+  const {cart} = useContext(CartContext)
   const { product } = useContext(ProductContext);
   const {handleCart} = useContext(CartContext)
+  const navigate = useNavigate()
   const { id } = useParams();
   const detailProduct = product.find((curElm) => curElm.id === parseInt(id));
 
@@ -35,7 +37,14 @@ const ProductDetailCart = () => {
           <button onClick={()=>handleCart(detailProduct)} className="cursor-pointer bg-black text-white px-6 py-2 rounded hover:bg-gray-800">
             Add to Cart
           </button>
-          
+          <button
+            onClick={() => navigate('/checkout')} // <-- navigate to checkout
+            className="cursor-pointer bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-400"
+
+            disabled={cart.length == 0}
+          >
+            Checkout
+          </button>
         </div>
       </div>
     </div>

@@ -54,7 +54,7 @@ const SideBar = () => {
           <button  onClick={()=>{
             navigate('/checkout')
             handleIsOpen()
-          }}  className="w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-semibold transition cursor-pointer">
+          }}  className="w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-semibold transition cursor-pointer disabled:cursor-not-allowed disabled:bg-green-400" disabled={cart.length == 0}>
             Checkout
           </button>
         </div>
