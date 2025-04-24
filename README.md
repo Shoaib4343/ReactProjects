@@ -16,3 +16,16 @@ An engaging application where users can explore Pokémon cards fetched from the 
 A dynamic application that features a multi-page design with sections like Home, About, Contact, and Country. Users can explore a list of countries with search and filter functionality, view details such as population, region, and capital, and use a "Read More" button for additional information. The app fetches real-time data from an API and features a responsive design styled with Tailwind CSS. <br>
 <a href="https://worldagency.netlify.app/">live demo</a>
 
+## E-Commerce Store
+
+A modern and fully responsive e-commerce web application built using **React.js**. This project includes product listing pages, detailed product views, cart functionality with context-based state management, and a checkout experience.
+
+Key features:
+- Dynamic product listing with individual product detail pages
+- Cart system using React Context API
+- Checkout functionality with smooth page navigation
+- Axios used for API data fetching
+- Styled with Tailwind CSS for a clean, responsive UI
+- Built-in routing with React Router DOM
+
+🔗 [Live Demo](https://elon-ecommerce.netlify.app/)
