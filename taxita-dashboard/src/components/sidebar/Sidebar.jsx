@@ -1,38 +1,3 @@
-// // src/components/DashboardLayout/Sidebar.jsx
-// import React from 'react';
-// import { NavLink } from 'react-router-dom';
-// import AccountToggle from './AccountToggle';
-// import { Search } from './Search';
-// import { RouteSelect } from './RouteSelect ';
-
-// const Sidebar = () => {
-//   return (
-//     <aside className="w-64 h-screen bg-gray-800 text-white p-4">
-//       <nav className="space-y-4">
-//       <AccountToggle />
-//       <Search />
-//       <RouteSelect />
-//         <NavLink to="/dashboard" className="block hover:text-gray-300">Dashboard</NavLink>
-//         <NavLink to="/dashboard/users" className="block hover:text-gray-300">Users</NavLink>
-//         <NavLink to="/dashboard/settings" className="block hover:text-gray-300">Settings</NavLink>
-//       </nav>
-//     </aside>
-//   );
-// };
-
-// export default Sidebar;
-
-// src/components/DashboardLayout/Sidebar.jsx
-
-
-
-
-
-
-
-
-
-
 
 
 import React from "react";

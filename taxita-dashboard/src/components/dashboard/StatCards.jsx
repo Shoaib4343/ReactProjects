@@ -1,7 +1,9 @@
-import dashboardData from "./dashboardData";
+import React from "react";
 import { FiTrendingUp, FiTrendingDown } from "react-icons/fi";
+import dashboardData from "./dashboardData";
+import { useNavigate } from "react-router-dom";
 
-// Better palette - UX friendly
+
 const bgColorOptions = [
   "bg-blue-50",
   "bg-indigo-50",
@@ -16,12 +18,12 @@ const bgColorOptions = [
 ];
 
 const StatCards = () => {
+  const navigate = useNavigate();
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-4 gap-5">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6">
       {dashboardData.map((item, index) => {
         const Icon = item.icon;
-        const { trend, pillText } = item;
-
+        const { trend, pillText, path } = item;
         const cardBg = bgColorOptions[index % bgColorOptions.length];
 
         const badgeColor =
@@ -31,38 +33,38 @@ const StatCards = () => {
             ? "bg-red-100 text-red-700"
             : "bg-gray-200 text-gray-600";
 
-        const iconColor = "text-blue-600";
-
         return (
           <div
             key={index}
-            className={`relative p-6 rounded-2xl shadow-md border border-gray-200 transition hover:shadow-lg ${cardBg}`}
+            onClick={() => path && navigate(path)}
+            className={`relative flex flex-col justify-between p-6 rounded-2xl shadow-sm border border-gray-200 transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${cardBg}`}
+            style={{ minHeight: "180px" }}
           >
-            {/* Top Badge */}
+            {/* Badge */}
             {trend && pillText && (
               <div
                 className={`absolute top-4 left-4 inline-flex items-center text-xs font-medium px-2 py-1 rounded-full ${badgeColor}`}
               >
                 {trend === "up" ? (
-                  <FiTrendingUp className="mr-1" />
+                  <FiTrendingUp className="mr-1" size={14} />
                 ) : (
-                  <FiTrendingDown className="mr-1" />
+                  <FiTrendingDown className="mr-1" size={14} />
                 )}
                 {pillText}
               </div>
             )}
 
-            {/* Icon Top Right */}
+            {/* Icon */}
             <div className="absolute top-4 right-4 p-3 rounded-full bg-white shadow-inner">
-              <Icon size={28} className={`${iconColor}`} />
+              <Icon size={26} className="text-blue-600" />
             </div>
 
-            {/* Title & Number */}
+            {/* Main Content */}
             <div className="pt-10">
-              <h4 className="text-lg font-semibold text-gray-700 mb-1">
+              <h4 className="text-sm font-medium text-gray-600 uppercase tracking-wide">
                 {item.title}
               </h4>
-              <p className="text-3xl font-bold text-gray-900 mb-1">
+              <p className="text-3xl font-bold text-gray-900 mt-1">
                 {item.value}
               </p>
               <p className="text-sm text-gray-500">{item.description}</p>

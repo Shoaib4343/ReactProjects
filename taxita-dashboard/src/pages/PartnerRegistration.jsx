@@ -1,25 +1,21 @@
-
 import { useState } from "react";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
-const Signup = () => {
+const PartnerRegistration = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    tradingYearStart: "",
-    tradingYearEnd: "",
+    companyName: "",
+    insuranceNumber: "",
     email: "",
     password: "",
     confirmPassword: "",
-    terms: false,
+    agreed: false,
   });
 
+  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
@@ -31,84 +27,93 @@ const Signup = () => {
   };
 
   const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.firstName.trim())
-      newErrors.firstName = "First Name is required";
-    if (!formData.lastName.trim()) newErrors.lastName = "Last Name is required";
-
-    if (!formData.tradingYearStart)
-      newErrors.tradingYearStart = "Trading Year Start Date is required";
-    if (!formData.tradingYearEnd)
-      newErrors.tradingYearEnd = "Trading Year End Date is required";
-
-    // Optional: check if end date is after start date
-    if (
-      formData.tradingYearStart &&
-      formData.tradingYearEnd &&
-      new Date(formData.tradingYearEnd) < new Date(formData.tradingYearStart)
-    ) {
-      newErrors.tradingYearEnd = "End date cannot be before start date";
-    }
-
-    if (!formData.email.trim()) newErrors.email = "Email is required";
+    const errs = {};
+    if (!formData.firstName.trim()) errs.firstName = "First name is required";
+    if (!formData.lastName.trim()) errs.lastName = "Last name is required";
+    if (!formData.companyName.trim())
+      errs.companyName = "Company name is required";
+    if (!formData.insuranceNumber.trim())
+      errs.insuranceNumber = "Insurance Number is required";
+    if (!formData.email.trim()) errs.email = "Email is required";
     else if (!/^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/.test(formData.email))
-      newErrors.email = "Enter a valid email address";
-
-    if (!formData.password) newErrors.password = "Password is required";
+      errs.email = "Enter a valid email address";
+    if (!formData.password) errs.password = "Password is required";
     else if (formData.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
-
-    if (!formData.confirmPassword)
-      newErrors.confirmPassword = "Please confirm your password";
-    else if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
-
-    if (!formData.terms)
-      newErrors.terms = "You must agree to the terms & conditions";
-
-    return newErrors;
+      errs.password = "Password must be at least 6 characters";
+    if (formData.password !== formData.confirmPassword)
+      errs.confirmPassword = "Passwords do not match";
+    if (!formData.agreed)
+      errs.agreed = "You must agree to the terms & conditions";
+    return errs;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newErrors = validateForm();
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length === 0) {
       setIsSubmitting(true);
-      // Simulate API call or do your actual signup logic here
+      // Simulate API call or submit here
       setTimeout(() => {
-        console.log("Signup Data:", formData);
+        alert("Partner registration submitted successfully!");
         setIsSubmitting(false);
       }, 1500);
     }
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-6 py-12 sm:px-8">
-      <section className="w-full max-w-2xl bg-white shadow-lg rounded-3xl p-10 sm:p-12 border border-gray-200">
-        <h2 className="text-4xl font-extrabold text-gray-900 text-center mb-2 tracking-tight">
-          Create Your Account
+    <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6 flex flex-col md:flex-row justify-center items-start gap-10">
+      {/* Left text section */}
+      <section className="md:w-5/12 max-h-[600px] overflow-y-auto bg-white rounded-3xl shadow-md p-8 border border-gray-200">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-4">
+          Taxita - Accountant on your driving seat
+        </h1>
+
+        <h2 className="text-xl font-semibold mb-3 border-l-4 border-indigo-600 pl-3">
+          How To become a Certified Partner?
         </h2>
-        <p className="text-center text-gray-500 mb-8 font-medium">
+        <div className="space-y-4 text-gray-700 leading-relaxed text-sm">
+          <p>
+            Curabitur accumsan quis sapien convallis egestas. Curabitur finibus
+            nunc in bibendum tempus. Sed non blandit est. Praesent mollis
+            tincidunt tortor, ac dapibus nulla consectetur quis. Phasellus
+            cursus diam id sapien scelerisque lacinia. In hac habitasse platea
+            dictumst. Nulla vitae blandit enim, ac posuere turpis.
+          </p>
+          <p>
+            Sed nec congue purus. Mauris consequat consequat dictum. Nam
+            hendrerit enim est, eget tristique justo dapibus at. Nullam dictum
+            rhoncus accumsan. Nulla at elementum ligula, nec venenatis ante.
+            Duis placerat leo nisl, in sagittis magna finibus ac. Mauris ut
+            bibendum orci. Vestibulum in risus eu neque pretium scelerisque.
+            Vivamus accumsan id ex eu pulvinar.
+          </p>
+          <p>
+            Curabitur maximus lacus dui, non iaculis ipsum varius sed. Nam sed
+            finibus metus. Vivamus tempus neque odio, quis eleifend ligula
+            semper et. Sed ut arcu at est commodo imperdiet. Nulla facilisi.
+          </p>
+        </div>
+      </section>
+
+      {/* Right form section */}
+      <section className="md:w-7/12 bg-white rounded-3xl shadow-md p-8 border border-gray-200">
+        <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
+          Partner Registration
+        </h2>
+        <p className="text-center text-gray-600 font-medium mb-6">
           Register a new membership, all fields are mandatory.
         </p>
-
-        <form
-          onSubmit={handleSubmit}
-          noValidate
-          className="space-y-6"
-          aria-label="Signup Form"
-        >
+        <form onSubmit={handleSubmit} noValidate className="space-y-6">
           {/* First & Last Name */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* First Name */}
             <div>
               <label
                 htmlFor="firstName"
                 className="block text-sm font-semibold text-gray-700 mb-1"
               >
-                First Name
+                First Name <span className="text-red-600">*</span>
               </label>
               <div
                 className={`flex items-center rounded-lg border px-4 py-3 transition-colors duration-200 focus-within:ring-2 focus-within:ring-indigo-500 ${
@@ -140,12 +145,13 @@ const Signup = () => {
               )}
             </div>
 
+            {/* Last Name */}
             <div>
               <label
                 htmlFor="lastName"
                 className="block text-sm font-semibold text-gray-700 mb-1"
               >
-                Last Name
+                Last Name <span className="text-red-600">*</span>
               </label>
               <div
                 className={`flex items-center rounded-lg border px-4 py-3 transition-colors duration-200 focus-within:ring-2 focus-within:ring-indigo-500 ${
@@ -178,82 +184,81 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Trading Year Start & End */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label
-                htmlFor="tradingYearStart"
-                className="block text-sm font-semibold text-gray-700 mb-1"
+          {/* Company Name (full width) */}
+          <div>
+            <label
+              htmlFor="companyName"
+              className="block text-sm font-semibold text-gray-700 mb-1"
+            >
+              Company Name <span className="text-red-600">*</span>
+            </label>
+            <input
+              id="companyName"
+              name="companyName"
+              type="text"
+              placeholder="Your Company Name"
+              value={formData.companyName}
+              onChange={handleChange}
+              className={`w-full rounded-lg border px-4 py-3 outline-none text-gray-900 placeholder-gray-400 transition-colors duration-200 focus:ring-2 focus:ring-indigo-500 ${
+                errors.companyName ? "border-red-500" : "border-gray-300"
+              }`}
+              aria-invalid={errors.companyName ? "true" : "false"}
+              aria-describedby={errors.companyName ? "companyName-error" : null}
+              required
+            />
+            {errors.companyName && (
+              <p
+                id="companyName-error"
+                className="mt-1 text-xs text-red-600"
+                role="alert"
               >
-                Trading Year Start Date
-              </label>
-              <input
-                id="tradingYearStart"
-                name="tradingYearStart"
-                type="date"
-                value={formData.tradingYearStart}
-                onChange={handleChange}
-                aria-invalid={errors.tradingYearStart ? "true" : "false"}
-                aria-describedby={
-                  errors.tradingYearStart ? "tradingYearStart-error" : null
-                }
-                required
-                className={`w-full rounded-lg border px-4 py-3 outline-none text-gray-900 placeholder-gray-400 transition-colors duration-200 focus:ring-2 focus:ring-indigo-500 ${
-                  errors.tradingYearStart ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.tradingYearStart && (
-                <p
-                  id="tradingYearStart-error"
-                  className="mt-1 text-xs text-red-600"
-                  role="alert"
-                >
-                  {errors.tradingYearStart}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="tradingYearEnd"
-                className="block text-sm font-semibold text-gray-700 mb-1"
-              >
-                Trading Year End Date
-              </label>
-              <input
-                id="tradingYearEnd"
-                name="tradingYearEnd"
-                type="date"
-                value={formData.tradingYearEnd}
-                onChange={handleChange}
-                aria-invalid={errors.tradingYearEnd ? "true" : "false"}
-                aria-describedby={
-                  errors.tradingYearEnd ? "tradingYearEnd-error" : null
-                }
-                required
-                className={`w-full rounded-lg border px-4 py-3 outline-none text-gray-900 placeholder-gray-400 transition-colors duration-200 focus:ring-2 focus:ring-indigo-500 ${
-                  errors.tradingYearEnd ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.tradingYearEnd && (
-                <p
-                  id="tradingYearEnd-error"
-                  className="mt-1 text-xs text-red-600"
-                  role="alert"
-                >
-                  {errors.tradingYearEnd}
-                </p>
-              )}
-            </div>
+                {errors.companyName}
+              </p>
+            )}
           </div>
 
-          {/* Email */}
+          {/* National Insurance Number (full width) */}
+          <div>
+            <label
+              htmlFor="insuranceNumber"
+              className="block text-sm font-semibold text-gray-700 mb-1"
+            >
+              National Insurance Number <span className="text-red-600">*</span>
+            </label>
+            <input
+              id="insuranceNumber"
+              name="insuranceNumber"
+              type="text"
+              placeholder="Enter your National Insurance Number"
+              value={formData.insuranceNumber}
+              onChange={handleChange}
+              className={`w-full rounded-lg border px-4 py-3 outline-none text-gray-900 placeholder-gray-400 transition-colors duration-200 focus:ring-2 focus:ring-indigo-500 ${
+                errors.insuranceNumber ? "border-red-500" : "border-gray-300"
+              }`}
+              aria-invalid={errors.insuranceNumber ? "true" : "false"}
+              aria-describedby={
+                errors.insuranceNumber ? "insuranceNumber-error" : null
+              }
+              required
+            />
+            {errors.insuranceNumber && (
+              <p
+                id="insuranceNumber-error"
+                className="mt-1 text-xs text-red-600"
+                role="alert"
+              >
+                {errors.insuranceNumber}
+              </p>
+            )}
+          </div>
+
+          {/* Email (full width with icon) */}
           <div>
             <label
               htmlFor="email"
               className="block text-sm font-semibold text-gray-700 mb-1"
             >
-              Email Address
+              Email Address <span className="text-red-600">*</span>
             </label>
             <div
               className={`flex items-center rounded-lg border px-4 py-3 transition-colors duration-200 focus-within:ring-2 focus-within:ring-indigo-500 ${
@@ -265,7 +270,7 @@ const Signup = () => {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="Email Address"
                 aria-invalid={errors.email ? "true" : "false"}
                 aria-describedby={errors.email ? "email-error" : null}
                 value={formData.email}
@@ -285,7 +290,7 @@ const Signup = () => {
             )}
           </div>
 
-          {/* Password and Confirm Password */}
+          {/* Password & Confirm Password */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Password */}
             <div>
@@ -293,7 +298,7 @@ const Signup = () => {
                 htmlFor="password"
                 className="block text-sm font-semibold text-gray-700 mb-1"
               >
-                Password
+                Password <span className="text-red-600">*</span>
               </label>
               <div
                 className={`flex items-center rounded-lg border px-4 py-3 transition-colors duration-200 focus-within:ring-2 focus-within:ring-indigo-500 ${
@@ -343,7 +348,7 @@ const Signup = () => {
                 htmlFor="confirmPassword"
                 className="block text-sm font-semibold text-gray-700 mb-1"
               >
-                Confirm Password
+                Confirm Password <span className="text-red-600">*</span>
               </label>
               <div
                 className={`flex items-center rounded-lg border px-4 py-3 transition-colors duration-200 focus-within:ring-2 focus-within:ring-indigo-500 ${
@@ -392,43 +397,43 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Terms and Conditions */}
+          {/* Terms & Conditions */}
           <div className="flex items-center">
             <input
-              id="terms"
-              name="terms"
+              id="agreed"
+              name="agreed"
               type="checkbox"
-              checked={formData.terms}
+              checked={formData.agreed}
               onChange={handleChange}
-              aria-invalid={errors.terms ? "true" : "false"}
-              aria-describedby={errors.terms ? "terms-error" : null}
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-              required
+              className="h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500 border-gray-300"
+              aria-invalid={errors.agreed ? "true" : "false"}
+              aria-describedby={errors.agreed ? "agreed-error" : null}
             />
             <label
-              htmlFor="terms"
-              className="ml-2 block text-sm text-gray-900 select-none"
+              htmlFor="agreed"
+              className="ml-2 block text-gray-700 font-medium cursor-pointer"
             >
               I agree to the{" "}
-              <Link
-                to="/terms"
+              <a
+                href="/terms"
                 className="text-indigo-600 hover:text-indigo-800 underline"
               >
                 terms & conditions
-              </Link>
+              </a>
+              <span className="text-red-600">*</span>
             </label>
           </div>
-          {errors.terms && (
+          {errors.agreed && (
             <p
-              id="terms-error"
+              id="agreed-error"
               className="mt-1 text-xs text-red-600"
               role="alert"
             >
-              {errors.terms}
+              {errors.agreed}
             </p>
           )}
 
-          {/* Submit */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -461,48 +466,12 @@ const Signup = () => {
                 ></path>
               </svg>
             )}
-            {isSubmitting ? "Signing up..." : "Sign Up"}
+            {isSubmitting ? "Registering..." : "Register"}
           </button>
         </form>
-
-        {/* Login link */}
-        <p className="mt-6 text-center text-gray-600 font-medium">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-indigo-600 hover:text-indigo-800 font-semibold transition-colors duration-200"
-          >
-            Login
-          </Link>
-        </p>
-
-        {/* Divider */}
-        <div className="flex items-center my-8 gap-4">
-          <hr className="flex-grow border-gray-300" />
-          <span className="text-gray-400 font-semibold text-sm">OR</span>
-          <hr className="flex-grow border-gray-300" />
-        </div>
-
-        {/* Social Buttons */}
-        <div className="grid grid-cols-2 gap-4">
-          <button
-            aria-label="Sign up with Google"
-            className="flex items-center justify-center gap-3 border border-gray-300 rounded-xl py-3 hover:bg-gray-50 transition-colors duration-200"
-          >
-            <FcGoogle size={22} />
-            <span className="text-gray-700 font-semibold">Google</span>
-          </button>
-          <button
-            aria-label="Sign up with Facebook"
-            className="flex items-center justify-center gap-3 rounded-xl py-3 bg-blue-700 text-white hover:bg-blue-800 transition-colors duration-200"
-          >
-            <FaFacebookF size={18} />
-            <span className="font-semibold">Facebook</span>
-          </button>
-        </div>
       </section>
     </main>
   );
 };
 
-export default Signup;
+export default PartnerRegistration;

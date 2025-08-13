@@ -1,314 +1,260 @@
-// Login.jsx
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import {
-  FaEnvelope,
-  FaLock,
-  FaEye,
-  FaEyeSlash,
-  FaFacebookF,
-} from "react-icons/fa";
+import { useState } from "react";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { FaFacebookF } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { loginApi } from "../services/authService";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
-import { Link } from "react-router-dom";
-
-/**
- * Production-ready Login component
- * - Requires Tailwind CSS + react-icons
- * - Replace `fakeSignIn` with your real API call
- */
-
-const fakeSignIn = async (payload) => {
-  // Simulate network latency & possible error
-  await new Promise((r) => setTimeout(r, 900));
-  if (payload.email === "blocked@example.com") {
-    const err = new Error("Account blocked");
-    err.status = 403;
-    throw err;
-  }
-  // Return a mock token/user
-  return { token: "mock-jwt-token", user: { email: payload.email } };
-};
-
-export default function Login() {
+const Login = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const [serverError, setServerError] = useState("");
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting, isSubmitted },
-  } = useForm({
-    defaultValues: { email: "", password: "", remember: false },
-  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
-    setServerError("");
-    // Normalize email (recommended)
-    const payload = {
-      ...data,
-      email: data.email.trim().toLowerCase(),
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    try {
-      const res = await fakeSignIn(payload);
-      // TODO: handle token, redirect, set auth state
-      console.log("SIGNED IN:", res);
-      // Example: localStorage.setItem("token", res.token) if remember === true
-    } catch (err) {
-      // Map server errors to form fields if applicable
-      if (err.status === 403) {
-        setError("email", {
-          type: "server",
-          message: "Account access blocked.",
-        });
-      } else {
-        setServerError(err.message || "Login failed. Please try again.");
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    else if (!/^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/.test(formData.email))
+      newErrors.email = "Enter a valid email address";
+
+    if (!formData.password) newErrors.password = "Password is required";
+    else if (formData.password.length < 6)
+      newErrors.password = "Password must be at least 6 characters";
+
+    return newErrors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = validateForm();
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      setIsSubmitting(true);
+      try {
+        const response = await loginApi(formData);
+        toast.success("Login successful!");
+        localStorage.setItem("token", response.data.access_token);
+        setAuth({ isAuthenticated: true, token: response.data.access_token });
+        navigate("/dashboard");
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            "Something went wrong. Please try again."
+        );
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-100 px-4">
-      <div className="w-full max-w-md">
-        {/* Card */}
-        <div className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden transform transition hover:shadow-xl">
-          {/* Optional top accent bar used by many enterprise apps */}
-          <div className="h-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600" />
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-6 py-12 sm:px-8">
+      <section className="w-full max-w-md bg-white shadow-lg rounded-3xl p-10 sm:p-12 border border-gray-200">
+        <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-1 tracking-tight">
+          Welcome Back
+        </h1>
+        <p className="text-center text-gray-500 mb-8 font-medium">
+          Log in to your account
+        </p>
 
-          <div className="p-8">
-            {/* Header */}
-            <h1 className="text-2xl md:text-3xl font-semibold text-slate-900 text-center">
-              Sign in
-            </h1>
-            <p className="mt-2 text-center text-sm text-slate-500">
-              Enter your credentials to access your account
-            </p>
-            {/* Server-level error area (for general errors) */}
-            <div role="status" aria-live="polite" className="mt-4">
-              {serverError && (
-                <div className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-md border border-red-100">
-                  {serverError}
-                </div>
-              )}
-            </div>
-            {/* Form */}
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              noValidate
-              className="mt-6 space-y-5"
-              aria-describedby={serverError ? "server-error" : undefined}
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          className="space-y-6"
+          aria-label="Login Form"
+        >
+          {/* Email */}
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-semibold text-gray-700 mb-1"
             >
-              {/* Email field */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-slate-700"
-                >
-                  Email
-                </label>
-
-                <div
-                  className={`mt-1 flex items-center gap-3 rounded-lg border px-3 py-2 transition-shadow ${
-                    errors.email
-                      ? "border-red-400 focus-within:ring-1 focus-within:ring-red-300"
-                      : "border-slate-200 focus-within:ring-1 focus-within:ring-blue-200"
-                  }`}
-                >
-                  <FaEnvelope className="text-slate-400" aria-hidden />
-                  <input
-                    id="email"
-                    type="email"
-                    inputMode="email"
-                    autoComplete="email"
-                    placeholder="you@company.com"
-                    aria-invalid={errors.email ? "true" : "false"}
-                    aria-describedby={errors.email ? "email-error" : undefined}
-                    className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400"
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-                        message: "Enter a valid email address",
-                      },
-                    })}
-                  />
-                </div>
-
-                {errors.email && (
-                  <p
-                    id="email-error"
-                    role="alert"
-                    className="mt-1 text-sm text-red-600"
-                  >
-                    {errors.email.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Password field */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-slate-700"
-                >
-                  Password
-                </label>
-
-                <div
-                  className={`mt-1 flex items-center gap-3 rounded-lg border px-3 py-2 transition-shadow ${
-                    errors.password
-                      ? "border-red-400 focus-within:ring-1 focus-within:ring-red-300"
-                      : "border-slate-200 focus-within:ring-1 focus-within:ring-blue-200"
-                  }`}
-                >
-                  <FaLock className="text-slate-400" aria-hidden />
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="current-password"
-                    placeholder="Your password"
-                    aria-invalid={errors.password ? "true" : "false"}
-                    aria-describedby={
-                      errors.password ? "password-error" : undefined
-                    }
-                    className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400"
-                    {...register("password", {
-                      required: "Password is required",
-                      minLength: {
-                        value: 6,
-                        message: "Password must be at least 6 characters",
-                      },
-                    })}
-                  />
-
-                  <button
-                    type="button"
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
-                    onClick={() => setShowPassword((s) => !s)}
-                    className="text-slate-500 hover:text-slate-700 focus:outline-none"
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
-                </div>
-
-                {errors.password && (
-                  <p
-                    id="password-error"
-                    role="alert"
-                    className="mt-1 text-sm text-red-600"
-                  >
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Row: remember + forgot */}
-              <div className="flex items-center justify-between gap-4">
-                <label className="inline-flex items-center text-sm gap-2">
-                  <input
-                    type="checkbox"
-                    {...register("remember")}
-                    className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="text-slate-600">Remember me</span>
-                </label>
-
-                <div className="text-sm">
-                  {/* // Forgot password link */}
-                  <Link
-                    to="/forgot-password"
-                    className="font-medium text-blue-600 hover:underline"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-              </div>
-
-              {/* Submit button */}
-              <div>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 text-white font-medium shadow-sm disabled:opacity-60 disabled:cursor-not-allowed transition"
-                >
-                  {isSubmitting ? (
-                    <svg
-                      className="h-4 w-4 animate-spin text-white"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                      />
-                    </svg>
-                  ) : null}
-                  {isSubmitting ? "Signing in…" : "Sign in"}
-                </button>
-              </div>
-            </form>
-            {/* OR divider */}
-            <div className="mt-5 flex items-center gap-3">
-              <div className="h-px flex-1 bg-slate-200" />
-              <span className="text-sm text-slate-400">or continue with</span>
-              <div className="h-px flex-1 bg-slate-200" />
+              Email Address
+            </label>
+            <div
+              className={`flex items-center rounded-lg border px-4 py-3 transition-colors duration-200 focus-within:ring-2 focus-within:ring-indigo-500 ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              }`}
+            >
+              <FaEnvelope className="text-gray-400 mr-3" aria-hidden="true" />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                aria-invalid={errors.email ? "true" : "false"}
+                aria-describedby={errors.email ? "email-error" : null}
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full bg-transparent outline-none text-gray-900 placeholder-gray-400"
+              />
             </div>
-            {/* Social logins */}
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <button
-                onClick={() => console.log("Google login")}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") console.log("Google login");
-                }}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:shadow-sm focus:outline-none"
-                aria-label="Continue with Google"
+            {errors.email && (
+              <p
+                id="email-error"
+                className="mt-1 text-xs text-red-600"
+                role="alert"
               >
-                <FcGoogle className="h-5 w-5" aria-hidden />
-                <span>Google</span>
-              </button>
-
-              <button
-                onClick={() => console.log("Facebook login")}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") console.log("Facebook login");
-                }}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1877F2] px-3 py-2 text-sm text-white hover:brightness-95 focus:outline-none"
-                aria-label="Continue with Facebook"
-              >
-                <FaFacebookF className="h-4 w-4" aria-hidden />
-                <span>Facebook</span>
-              </button>
-            </div>
-            {/* // Create account link */}
-            <p className="mt-6 text-center text-sm text-slate-500">
-              Don't have an account?{" "}
-              <Link
-                to="/dashboard/signup"
-                className="font-medium text-blue-600 hover:underline"
-              >
-                Create account
-              </Link>
-            </p>
+                {errors.email}
+              </p>
+            )}
           </div>
+
+          {/* Password */}
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-gray-700 mb-1"
+            >
+              Password
+            </label>
+            <div
+              className={`flex items-center rounded-lg border px-4 py-3 transition-colors duration-200 focus-within:ring-2 focus-within:ring-indigo-500 ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              }`}
+            >
+              <FaLock className="text-gray-400 mr-3" aria-hidden="true" />
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                autoComplete="current-password"
+                aria-invalid={errors.password ? "true" : "false"}
+                aria-describedby={errors.password ? "password-error" : null}
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="w-full bg-transparent outline-none text-gray-900 placeholder-gray-400"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                className="text-gray-400 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded ml-3"
+              >
+                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
+            </div>
+            {errors.password && (
+              <p
+                id="password-error"
+                className="mt-1 text-xs text-red-600"
+                role="alert"
+              >
+                {errors.password}
+              </p>
+            )}
+          </div>
+
+          {/* Forgot Password Link */}
+          <div className="text-right">
+            <Link
+              to="/forgot-password"
+              className="text-sm font-medium text-indigo-600 hover:text-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-full py-3 rounded-xl font-semibold text-white transition-colors duration-300 ${
+              isSubmitting
+                ? "bg-indigo-400 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300"
+            } flex items-center justify-center gap-3`}
+          >
+            {isSubmitting && (
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                ></path>
+              </svg>
+            )}
+            {isSubmitting ? "Logging in..." : "Log In"}
+          </button>
+        </form>
+
+        {/* Signup */}
+        <p className="mt-6 text-center text-gray-600 font-medium">
+          Don’t have an account?{" "}
+          <Link
+            to="/signup"
+            className="text-indigo-600 hover:text-indigo-800 font-semibold transition-colors duration-200 underline"
+          >
+            Sign up
+          </Link>
+        </p>
+
+        {/* Referral Partner */}
+        <p className="mt-4 text-center text-gray-600 font-medium ">
+          Do you want to be our referral partner? <br />
+          <Link
+            to="/partner-registration"
+            className="text-indigo-600 hover:text-indigo-800 font-semibold transition-colors duration-200 underline"
+          >
+            Become our certified partner
+          </Link>
+        </p>
+
+        {/* Divider */}
+        <div className="flex items-center my-8 gap-4">
+          <hr className="flex-grow border-gray-300" />
+          <span className="text-gray-400 font-semibold text-sm">OR</span>
+          <hr className="flex-grow border-gray-300" />
         </div>
 
-        {/* Subtle footer for spacing on small screens */}
-        <div className="mt-6 text-center text-xs text-slate-400">
-          &copy; {new Date().getFullYear()} YourCompany — All rights reserved
+        {/* Social Login */}
+        <div className="grid grid-cols-2 gap-4">
+          <button
+            aria-label="Login with Google"
+            className="flex items-center justify-center gap-3 border border-gray-300 rounded-xl py-3 hover:bg-gray-50 transition-colors duration-200"
+          >
+            <FcGoogle size={22} />
+            <span className="text-gray-700 font-semibold">Google</span>
+          </button>
+          <button
+            aria-label="Login with Facebook"
+            className="flex items-center justify-center gap-3 rounded-xl py-3 bg-blue-700 text-white hover:bg-blue-800 transition-colors duration-200"
+          >
+            <FaFacebookF size={18} />
+            <span className="font-semibold">Facebook</span>
+          </button>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
-}
+};
+
+export default Login;

@@ -21,6 +21,7 @@ const dashboardData = [
     description: "All your income",
     trend: "up",
     pillText: "0% up",
+    path: "/dashboard/income",
   },
   {
     icon: FaCalendarAlt,
