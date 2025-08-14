@@ -1,92 +1,3 @@
-// import React, { useEffect, useRef, useState } from "react";
-// import { FiX, FiHome, FiSettings, FiLogOut, FiSearch } from "react-icons/fi";
-// import { useNavigate } from "react-router-dom";
-
-// export const CommandMenu = ({ open, setOpen }) => {
-//   const modalRef = useRef();
-//   const navigate = useNavigate();
-//   const [searchQuery, setSearchQuery] = useState("");
-
-//   const commands = [
-//     { label: "Dashboard", icon: <FiHome />, action: () => navigate("/dashboard") },
-//     { label: "Settings", icon: <FiSettings />, action: () => navigate("/dashboard/settings") },
-//     { label: "Logout", icon: <FiLogOut />, action: () => alert("Logged out") },
-//   ];
-
-//   // 🔍 Filter results
-//   const filtered = commands.filter((cmd) =>
-//     cmd.label.toLowerCase().includes(searchQuery.toLowerCase())
-//   );
-
-//   // ❌ Close on outside click
-//   useEffect(() => {
-//     const handleClickOutside = (e) => {
-//       if (modalRef.current && !modalRef.current.contains(e.target)) {
-//         setOpen(false);
-//       }
-//     };
-
-//     if (open) {
-//       document.addEventListener("mousedown", handleClickOutside);
-//     }
-
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, [open, setOpen]);
-
-//   if (!open) return null;
-
-//   return (
-//     <div className="fixed inset-0 bg-black/30 z-50 flex items-start justify-center p-4">
-//       <div
-//         ref={modalRef}
-//         className="bg-white w-full max-w-md rounded shadow-lg p-4 relative animate-fade-in"
-//       >
-//         {/* ❌ Close Button */}
-//         <button
-//           onClick={() => setOpen(false)}
-//           className="absolute top-2 right-2 p-1 rounded hover:bg-stone-100"
-//         >
-//           <FiX className="text-stone-500" />
-//         </button>
-
-//         {/* 🔎 Search Input */}
-//         <div className="flex items-center gap-2 mb-4 border rounded px-2 py-1.5 bg-stone-100">
-//           <FiSearch className="text-stone-500" />
-//           <input
-//             type="text"
-//             placeholder="Search commands..."
-//             value={searchQuery}
-//             onChange={(e) => setSearchQuery(e.target.value)}
-//             className="w-full bg-transparent outline-none text-sm text-stone-700"
-//             autoFocus
-//           />
-//         </div>
-
-//         {/* 📋 Filtered List */}
-//         {filtered.length > 0 ? (
-//           <ul className="text-sm text-stone-700 space-y-2">
-//             {filtered.map((cmd, index) => (
-//               <li
-//                 key={index}
-//                 onClick={() => {
-//                   cmd.action();
-//                   setOpen(false);
-//                 }}
-//                 className="flex items-center gap-2 hover:bg-stone-100 px-2 py-1 rounded cursor-pointer"
-//               >
-//                 {cmd.icon} {cmd.label}
-//               </li>
-//             ))}
-//           </ul>
-//         ) : (
-//           <div className="text-stone-400 text-sm px-2">No results found.</div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
 
 
 
@@ -163,7 +74,7 @@ export const CommandMenu = ({ open, setOpen }) => {
                   cmd.action();
                   setOpen(false);
                 }}
-                className="flex items-center gap-3 px-4 py-2 text-sm text-stone-700 hover:bg-stone-100 
+                className="flex items-center gap-3 px-4 py-2 text-sm text-stone-700 hover:bg-blue-100 
                            cursor-pointer transition"
               >
                 <span className="text-stone-500">{cmd.icon}</span>

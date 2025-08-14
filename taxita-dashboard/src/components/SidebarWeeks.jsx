@@ -1,4 +1,5 @@
-// SidebarWeeks.jsx
+
+
 import React, { useState } from "react";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaChevronDown } from "react-icons/fa";
@@ -44,7 +45,7 @@ const SidebarWeeks = ({ weeksData, onWeekSelect }) => {
             className="w-full border border-gray-300 rounded-lg px-3 py-3 text-left text-gray-700 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 flex justify-between items-center text-sm"
           >
             <span className="truncate font-medium">
-              {selectedWeek.label.split(" ")[0]} w/c: {formatDate(selectedDay.id)} &nbsp; £0
+              Week {weeksData.findIndex((w) => w.id === selectedWeekId) + 1} w/c: {formatDate(selectedDay.id)} &nbsp; £0
             </span>
             <FaChevronDown
               className={`ml-2 transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
@@ -54,7 +55,7 @@ const SidebarWeeks = ({ weeksData, onWeekSelect }) => {
           {/* Dropdown List */}
           {dropdownOpen && (
             <ul className="absolute mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-96 overflow-y-auto z-30 text-sm">
-              {weeksData.map((week) => (
+              {weeksData.map((week, index) => (
                 <li key={week.id}>
                   <button
                     onClick={() => handleWeekSelect(week)}
@@ -65,7 +66,7 @@ const SidebarWeeks = ({ weeksData, onWeekSelect }) => {
                     }`}
                   >
                     <span className="truncate">
-                      {week.label.split(" ")[0]} w/c: {formatDate(week.days[0].id)} &nbsp; £0
+                      Week {index + 1 } w/c: {formatDate(week.days[0].id)} &nbsp; £0
                     </span>
                   </button>
                 </li>

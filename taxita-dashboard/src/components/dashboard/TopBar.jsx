@@ -30,7 +30,7 @@ export const TopBar = () => {
     <div className="border-b border-stone-200 px-4 py-3">
       <div className="flex items-start justify-between">
         <div className="flex flex-col">
-          <span className="text-sm font-bold">🚀 {greeting}, Tom!</span>
+          <span className="text-sm font-bold">🚀 {greeting}, John!</span>
           <span className="text-xs text-stone-500">{getFormattedDate()}</span>
         </div>
 
